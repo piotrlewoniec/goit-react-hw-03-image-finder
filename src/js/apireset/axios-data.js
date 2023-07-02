@@ -1,4 +1,5 @@
-import axios, { isCancel, AxiosError } from 'axios';
+// import axios, { isCancel, AxiosError } from 'axios';
+import axios from 'axios';
 export async function axiosData(header, parameters) {
   try {
     const response = await axios(

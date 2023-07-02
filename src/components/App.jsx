@@ -1,4 +1,5 @@
-import React, { Children, Component } from 'react';
+// import React, { Children, Component } from 'react';
+import React, { Component } from 'react';
 import css from './App.module.css';
 import { Searchbar } from './searchbar/Searchbar';
 import { ImageGallery } from './imagegallery/ImageGallery';

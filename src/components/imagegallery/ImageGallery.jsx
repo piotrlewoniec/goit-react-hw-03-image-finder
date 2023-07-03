@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import css from './ImageGallery.module.css';
+import React from 'react';
 
-export const ImageGallery = ({ children, action }) => (
-  <ul className={css.imagegallery} onClick={action}>
+export const ImageGallery = React.forwardRef((props, ref) => (
+  <ul ref={ref} className={css.imagegallery} onClick={props.action}>
     {/* <!-- Zbiór <li> z obrazami --> */}
-    {children}
+    {props.children}
   </ul>
-);
+));
 
 ImageGallery.propTypes = {
   children: PropTypes.node,

@@ -23,6 +23,7 @@ export class App extends Component {
 
   constructor(props) {
     super(props);
+    this.galleryRef = React.createRef();
     this.state = {
       // searchPchrase: '',
       data: [],
@@ -36,12 +37,14 @@ export class App extends Component {
     };
   }
 
+  // galleryRef = React.forwardRef();
   searchPchrase = '';
   currentPage = 1;
   perPage = 12;
   totalHits = 0;
   largeImageURL = '';
   alt = '';
+  scroll = false;
 
   handleSubmit = evt => {
     evt.preventDefault();
@@ -68,6 +71,13 @@ export class App extends Component {
   };
 
   dataToDisplayPreparation(response) {
+    this.scroll = false;
+    if (window.scrollY > 0) {
+      window.scrollBy({
+        top: -window.scrollY,
+        behavior: 'smooth',
+      });
+    }
     if (response.length !== 0) {
       Notiflix.Notify.success(`You have ${this.totalHits} hits`);
       Notiflix.Notify.success(`Now loading ${response.length}`);
@@ -87,6 +97,7 @@ export class App extends Component {
       this.setState(prevState => {
         return { isData: false, data: [], isPages: false };
       });
+
       Notiflix.Notify.failure(`You have ${this.totalHits} hits`);
     }
   }
@@ -118,7 +129,8 @@ export class App extends Component {
 
   dataToAddDisplayPreparation(response) {
     Notiflix.Notify.success(`You have ${this.totalHits} hits`);
-    Notiflix.Notify.success(`Now loading ${response.length}`);
+    Notiflix.Notify.success(`Now loading ${response.length} more`);
+    this.scroll = true;
     let totalPages = 0;
     if (this.totalHits % this.perPage !== 0) {
       totalPages = Math.trunc(this.totalHits / this.perPage) + 1;
@@ -219,12 +231,24 @@ export class App extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (this.scroll) {
+      const cardElement = this.galleryRef.current.firstElementChild;
+      const { height: cardHeight } = cardElement.getBoundingClientRect();
+
+      window.scrollBy({
+        top: cardHeight * 3,
+        behavior: 'smooth',
+      });
+    }
+  }
+
   render() {
     return (
       <div className={css.app}>
         <Searchbar onSubmit={this.handleSubmit} />
         <main>
-          <ImageGallery action={this.handleImageClick}>
+          <ImageGallery action={this.handleImageClick} ref={this.galleryRef}>
             {this.state.isData &&
               this.state.data.map(element => (
                 <ImageGalleryItem

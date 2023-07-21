@@ -199,7 +199,7 @@ export class App extends Component {
     const header = {
       method: 'get',
       accept: 'application/json',
-      baseURL: 'https://pixabay.com/api',
+      baseURL: 'https://pixabay.com/api/',
     };
     const parameters = {
       key: apikeyPixabay,

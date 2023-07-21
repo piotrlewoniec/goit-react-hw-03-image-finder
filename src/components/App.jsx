@@ -7,11 +7,6 @@ import { ImageGalleryItem } from './imagegalleryitem/ImageGalleryItem';
 import { Button } from './button/Button';
 import { Loader } from './loader/Loader';
 import { Modal } from './modal/Modal';
-import {
-  headerDefaultGet,
-  headerDefaultUrl,
-  paramsDefaultUrl,
-} from '../js/config/stdquery';
 import Notiflix from 'notiflix';
 import { apikeyPixabay } from '../js/config/apikey';
 import { axiosData } from '../js/apireset/axios-data';
@@ -201,10 +196,17 @@ export class App extends Component {
   };
 
   async getDataFromServer() {
-    const header = { ...headerDefaultGet, ...headerDefaultUrl };
+    const header = {
+      method: 'get',
+      accept: 'application/json',
+      baseURL: 'https://pixabay.com/api',
+    };
     const parameters = {
-      ...paramsDefaultUrl,
       key: apikeyPixabay,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      safesearch: true,
+      per_page: 12,
       q: this.searchPchrase,
       page: this.currentPage,
     };
